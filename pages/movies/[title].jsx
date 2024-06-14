@@ -5,40 +5,30 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export async function getServerSideProps(context) {
-    const { id } = context.params;
+    const { title } = context.query;
+    
   
     const { data } = await axios.get(
-      `http://www.omdbapi.com/?i=tt3896198&apikey=f5bbb04b`
+      `http://www.omdbapi.com/?i=tt3896198&apikey=f5bbb04b&s=${title}`
     );
+
+    console.log(data.Search)
   
     return {
       props: {
-        movieData: data,
+        movieData: data.Search || [],
       },
     };
   }
 
 export default function TitleSearch({ movieData }) {
-  const router = useRouter()
-  const [movies, setMovies] = useState()
-  console.log(movieData)
-  const { title } = router.query
-
-  async function fetchMoviesByTitle() {
-    const { data } = await axios.get(`http://www.omdbapi.com/?i=tt3896198&apikey=f5bbb04b&s=${title || "fast"}`)
-    setMovies(data)
-    console.log(data)
-  }
-
-  useEffect(() => {
-    fetchMoviesByTitle()
-  }, [])
+    console.log(movieData)
   return (
     <>
     <Link href={`/`}>
         <button>Back</button>
       </Link>
-      <MovieCard movieData={movieData} movies={movies}/>
+      <MovieCard movieData={movieData}/>
     </>
   );
 }

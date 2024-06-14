@@ -1,11 +1,17 @@
+import Link from "next/link";
+
 export default function MovieCard({ movieData }) {
   return (
     <>
-      <div>
-        <figure>
-          <img src={movieData.Poster} />
-        </figure>
-      </div>
+      {movieData?.map((movie) => (
+        <Link href={`/movieID/${movie.imdbID}`} key={movie.imdbID}>
+          <div >
+            <figure>
+              <img src={movie.Poster} alt={movie.Title} />
+            </figure>
+          </div>
+        </Link>
+      ))}
     </>
   );
 }
